@@ -11,21 +11,25 @@ class SpaceRepo {
         model: 'gemini-1.5-flash-latest',
         apiKey: dotenv.env['API_KEY'] ?? "",
       );
-      final previousMessagesLength = previousMessages.length;
-      final prompt = previousMessagesLength > 3
-          ? previousMessages.sublist(previousMessagesLength - 3)
-          : previousMessages;
-          print(prompt);
-      final promptText = prompt.map((e) => e.toMap()).toList();
+
+      // Convert conversation history into readable text
+      final promptText = previousMessages.map((message) {
+        final messageText = message.parts.map((part) => part.text).join(' ');
+        return '${message.role}: $messageText';
+      }).join('\n');
+
       print(promptText);
-      final content = [Content.text(promptText.toString())];
+
+      final content = [Content.text(promptText)];
       final response = await model.generateContent(content);
+
       print(previousMessages.length);
       print(response.text);
-      return response.text??"";
+
+      return response.text ?? "";
     } catch (e) {
-      return "";
       print(e.toString());
+      return "";
     }
   }
 }
