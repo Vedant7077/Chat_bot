@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gemini_api/bloc/chat_bloc.dart';
 import 'package:gemini_api/models/chat_message_model.dart';
+import 'package:lottie/lottie.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -30,6 +31,7 @@ class _HomepageState extends State<Homepage> {
                 height: double.maxFinite,
                 decoration: const BoxDecoration(
                     image: DecorationImage(
+                        opacity: 0.2,
                         image: AssetImage("assets/space.jpeg"),
                         fit: BoxFit.cover)),
                 child: Column(
@@ -64,12 +66,41 @@ class _HomepageState extends State<Homepage> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(16),
                                       color: Colors.amber.withOpacity(0.1)),
-                                  child:
-                                      Text(messages[index].parts.first.text));
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        messages[index].role == "user"
+                                            ? "User"
+                                            : "Space Pod",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color:
+                                                messages[index].role == "user"
+                                                    ? Colors.yellow
+                                                    : Colors.purple.shade200),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(messages[index].parts.first.text,style: const TextStyle(height: 1.2),),
+                                    ],
+                                  ));
                             })),
+                    if(chatBloc.generating) 
+                    Row(
+                      children: [
+                        Container(
+                          height: 45,
+                          width: 45,
+                          child: Lottie.asset('assets/loader.json')),
+                          const SizedBox(width: 20,),
+                          const Text("Loading..."),
+                      ],
+                    ),
                     Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                          const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
                       child: Row(
                         children: [
                           Expanded(

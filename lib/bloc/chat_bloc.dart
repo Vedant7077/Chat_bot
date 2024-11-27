@@ -13,13 +13,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   List<ChatMessageModel> messages = [];
+  bool generating = false;
 
   FutureOr<void> chatGenerateNewTextMessageEvent(ChatGenerateNewTextMessageEvent event, Emitter<ChatState> emit) async{
     messages.add(ChatMessageModel(role: "user", parts: [
       ChatPartModel(text: event.inputMessage)
     ]));
     emit(ChatSuccessState(messages: messages));
-
-    await SpaceRepo.chatTextGenerationRepo(messages);
+    generating = true;
+    String generatedText = await SpaceRepo.chatTextGenerationRepo(messages);
+    if(generatedText.length>0){
+      messages.add(ChatMessageModel(role: 'model', parts: [ChatPartModel(text: generatedText)]));
+      emit(ChatSuccessState(messages: messages));
+    }
+      generating = false;
   }
 }
