@@ -59,8 +59,8 @@ Follow these steps to set up the Chat_Bot app on your local environment:
 ---
 
 ## Screenshots
-![Chat_Bot Home Screen](assets/screenshots/home.png)
-![Chat_Bot Conversation](assets/screenshots/conversation.png)
+![Chat_Bot Home Screen](assets/screenshots/imag1.png)
+![Chat_Bot Conversation](assets/screenshots/image2.png)
 
 ---
 
